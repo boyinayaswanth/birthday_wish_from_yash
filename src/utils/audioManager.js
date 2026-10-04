@@ -7,12 +7,28 @@
 
 let audioInstance = null;
 
+function resolveAudioSrc() {
+  const base = import.meta.env.BASE_URL || '/';
+  const cleanBase = base.endsWith('/') ? base : `${base}/`;
+  return `${cleanBase}audio/ReelAudio-84992.mp3`;
+}
+
 export function getAudio() {
   if (!audioInstance) {
-    audioInstance = new Audio('/audio/ReelAudio-84992.mp3');
+    const primarySrc = resolveAudioSrc();
+    audioInstance = new Audio(primarySrc);
     audioInstance.loop = true;
     audioInstance.volume = 0.85;
     audioInstance.preload = 'auto';
+
+    // Fallback listener in case primary URL resolution encounters any environment issue
+    audioInstance.addEventListener('error', () => {
+      if (!audioInstance._retried) {
+        audioInstance._retried = true;
+        audioInstance.src = './audio/ReelAudio-84992.mp3';
+        audioInstance.load();
+      }
+    });
 
     // Bulletproof loop listener
     audioInstance.addEventListener('ended', () => {

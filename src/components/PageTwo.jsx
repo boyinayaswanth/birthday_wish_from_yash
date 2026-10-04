@@ -88,10 +88,16 @@ export default function PageTwo({ onBack, onNext }) {
       <figure className="eyes-frame-container">
         <div className="eyes-glass-wrapper">
           <img 
-            src="/images/sowmya_eyes_cinematic.jpg" 
+            src={`${import.meta.env.BASE_URL}images/sowmya_eyes_cinematic.jpg`} 
             alt="Sowmya's captivating eyes" 
             className={`eyes-image ${isRevealed ? 'is-revealed' : 'is-concealed'}`}
             loading="eager"
+            onError={(e) => {
+              if (!e.target._retried) {
+                e.target._retried = true;
+                e.target.src = './images/sowmya_eyes_cinematic.jpg';
+              }
+            }}
           />
           {isRevealed && <div className="eyes-dark-fade-curtain" aria-hidden="true" />}
           <div className="eyes-vignette-overlay" aria-hidden="true" />

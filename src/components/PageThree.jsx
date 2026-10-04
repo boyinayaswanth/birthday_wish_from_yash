@@ -37,6 +37,23 @@ export default function PageThree({ onBack, onHome, onOpenSecret, onNext }) {
         role="region"
         aria-label="Message card for Sowmya"
       >
+        {/* Background Watermark Image Layer */}
+        <div className="watermark-image-container" aria-hidden="true">
+          <img 
+            src={`${import.meta.env.BASE_URL}images/sowmya_portrait.jpg`} 
+            alt="Sowmya" 
+            className="watermark-image"
+            loading="eager"
+            onError={(e) => {
+              if (!e.target._retried) {
+                e.target._retried = true;
+                e.target.src = './images/sowmya_portrait.jpg';
+              }
+            }}
+          />
+          <div className="watermark-gradient-overlay" />
+        </div>
+
         {/* Floating golden dust sparkle elements */}
         <div className="card-sparkles" aria-hidden="true">
           <span className="sparkle s1">✦</span>
